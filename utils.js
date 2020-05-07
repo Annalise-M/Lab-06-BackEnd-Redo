@@ -16,10 +16,10 @@ function mungeLocation(locationData) {
 }
 function mungeWeather(weatherData) {
     try {
-        const transformedData = weatherData.data.map((__forecast) => {
+        const transformedData = weatherData.map((weather) => {
             return {
-                forecast:__forecast.weather.description,
-                time:__forecast.valid_date
+                forecast: weather,
+                datetime: weather.valid_date
             };
         });
         return transformedData;
