@@ -1,16 +1,15 @@
 const dotenv = require('dotenv');
 dotenv.config();
+
 const express = require('express');
 const request = require('superagent');
 const cors = require('cors');
-const { mungeLocation, mungedWeather } = require('./utils.js');
 
+const { mungeLocation, mungeWeather } = require('./utils.js');
 const PORT = process.env.PORT || 3000;
-
 const app = express();
 
 app.use(cors());
-
 
 app.get('/location', async(req, res) => {
     
@@ -31,13 +30,11 @@ app.get('/location', async(req, res) => {
 
 });
 
-//https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=${}=${req.query.search}`
-
 app.get('/weather', async(req, res) => {
     // console.log('hello world');
     try {
         const data = await request.get(`https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}key=${process.env.WEATHER_KEY}`);
-        const mungedData = mungedWeather(data.body);
+        const mungedData = mungeWeather(data.body);
         
         res.json(mungedData);
     } catch (e) {
@@ -49,7 +46,9 @@ app.get('/weather', async(req, res) => {
     }
 });
 
-// error for any unknown location
+
+
+
 app.get('*', (req, res) => {
     res.status(404).json({
         error:'no such route!',

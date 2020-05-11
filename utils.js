@@ -12,8 +12,8 @@ function mungeLocation(locationData) {
     } catch (e) {
         return {};
     }
-        
 }
+
 function mungeWeather(weatherData) {
     try {
         const transformedData = weatherData.map((weather) => {
@@ -28,8 +28,23 @@ function mungeWeather(weatherData) {
     }
 }
 
+function mungeTrails(trailsData) {
+    try {
+        const transformedData = trailsData.map((trails) => {
+            return {
+                formatted_query : trails.display_name,
+                latitude : location.lat,
+                longitude : location.lon
+            };
+        });
+        return transformedData;
+    } catch (e) {
+        return [{}];
+    }
+}
 
 module.exports = {
     mungeLocation, 
-    mungeWeather
+    mungeWeather,
+    mungeTrails
 };
